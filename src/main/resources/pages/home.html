@@ -36,10 +36,27 @@
         .submit-button {
             margin-top: 10px;
         }
+        #deleteContainer {
+            margin-top: 20px;
+        }
+        #deleteInput {
+            width: 300px;
+            padding: 5px;
+        }
+
+        #deleteButton {
+            margin-left: 10px;
+            padding: 5px 10px;
+        }
     </style>
 </head>
 <body>
     <h1 id="greeting">Welcome to the Home Page</h1>
+
+    <div id="deleteContainer">
+        <input type="text" id="deleteInput" placeholder="name for celestial body to be deleted">
+        <button id="deleteButton" onclick="deleteCelestial()">Delete</button>
+    </div>
 
     <table id="celestialTable">
         <tr>
@@ -151,42 +168,66 @@
             }
         });
 
-    async function populateCelestialTable() {
-    document.getElementById('celestialTable').innerHTML = '<tr><th>Type</th><th>ID</th><th>Name</th><th>Owner</th></tr>';
-    const response = await fetch('http://localhost:8080/api/planet', {credentials: 'include'});
-    if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-        const table = document.getElementById('celestialTable');
-        data.forEach(planet => {
-            const row = table.insertRow();
-            const typeCell = row.insertCell(0);
-            const idCell = row.insertCell(1);
-            const nameCell = row.insertCell(2);
-            const ownerCell = row.insertCell(3);
-            typeCell.textContent = 'planet';
-            idCell.textContent = planet.planetId;
-            nameCell.textContent = planet.planetName;
-            ownerCell.textContent = planet.ownerId;
-        });
-    }
-    const moonResponse = await fetch('http://localhost:8080/api/moon', {credentials: 'include'});
-        if (moonResponse.ok) {
-            const moonData = await moonResponse.json();
+        async function populateCelestialTable() {
+        document.getElementById('celestialTable').innerHTML = '<tr><th>Type</th><th>ID</th><th>Name</th><th>Owner</th></tr>';
+        const response = await fetch('http://localhost:8080/api/planet', {credentials: 'include'});
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
             const table = document.getElementById('celestialTable');
-            moonData.forEach(moon => {
+            data.forEach(planet => {
                 const row = table.insertRow();
                 const typeCell = row.insertCell(0);
                 const idCell = row.insertCell(1);
                 const nameCell = row.insertCell(2);
                 const ownerCell = row.insertCell(3);
-                typeCell.textContent = 'moon';
-                idCell.textContent = moon.moonId;
-                nameCell.textContent = moon.moonName;
-                ownerCell.textContent = moon.ownerId;
+                typeCell.textContent = 'planet';
+                idCell.textContent = planet.planetId;
+                nameCell.textContent = planet.planetName;
+                ownerCell.textContent = planet.ownerId;
             });
         }
-    }
+        const moonResponse = await fetch('http://localhost:8080/api/moon', {credentials: 'include'});
+            if (moonResponse.ok) {
+                const moonData = await moonResponse.json();
+                const table = document.getElementById('celestialTable');
+                moonData.forEach(moon => {
+                    const row = table.insertRow();
+                    const typeCell = row.insertCell(0);
+                    const idCell = row.insertCell(1);
+                    const nameCell = row.insertCell(2);
+                    const ownerCell = row.insertCell(3);
+                    typeCell.textContent = 'moon';
+                    idCell.textContent = moon.moonId;
+                    nameCell.textContent = moon.moonName;
+                    ownerCell.textContent = moon.ownerId;
+                });
+            }
+        }
+        
+        async function deleteCelestial() {
+            const selectedOption = document.getElementById('locationSelect').value;
+            const name = document.getElementById('deleteInput').value;
+
+            let url;
+            if (selectedOption === 'moon') {
+                url = `http://localhost:8080/api/moon/${name}`;
+            } else if (selectedOption === 'planet') {
+                url = `http://localhost:8080/api/planet/${name}`;
+            } else {
+                alert('Invalid selection: choose moon or planet to delete');
+                return;
+            }
+            const response = await fetch(url, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (response.status === 200) {
+                populateCelestialTable();
+            } else {
+                console.error(`Failed to delete ${selectedOption} with name ${name}`);
+            }
+        }
     </script>
 </body>
 </html>
