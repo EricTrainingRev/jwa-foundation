@@ -21,10 +21,10 @@ public class UserService {
         return "User registered";
     }
 
-    public String authenticate(LoginInfo loginInfo) {
+    public User authenticate(LoginInfo loginInfo) {
         Optional<User> possibleUser = this.userDao.findByUserUsername(loginInfo.getUsername());
         if(possibleUser.isPresent() && possibleUser.get().getUserPassword().equals(loginInfo.getPassword())){
-            return "login complete";
+            return possibleUser.get();
         } else {
             throw new AuthenticationFailed("login attempt failed");
         }

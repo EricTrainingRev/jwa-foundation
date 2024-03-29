@@ -82,7 +82,9 @@
     }) 
     if (response.status === 202) {
       // Login successful
-      sessionStorage.setItem("user", username)
+      const data = await response.json();
+      sessionStorage.setItem("user", data.userUsername)
+      sessionStorage.setItem("userId", data.userId)
       window.location.replace("http://localhost:8080/page/home");
     } else {
       // Login failed

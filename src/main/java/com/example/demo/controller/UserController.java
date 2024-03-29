@@ -42,8 +42,8 @@ public class UserController {
      }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginInfo credentials, HttpSession session){
-        ResponseEntity<String> response = new ResponseEntity<>(this.userService.authenticate(credentials), HttpStatus.ACCEPTED);
+    public ResponseEntity<User> login(@RequestBody LoginInfo credentials, HttpSession session){
+        ResponseEntity<User> response = new ResponseEntity<>(this.userService.authenticate(credentials), HttpStatus.ACCEPTED);
         session.setAttribute("user", credentials.getUsername());
         return response;
     }
