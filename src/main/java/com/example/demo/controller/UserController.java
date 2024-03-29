@@ -5,8 +5,10 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +18,9 @@ import com.example.demo.entities.LoginInfo;
 import com.example.demo.entities.User;
 import com.example.demo.service.UserService;
 import com.example.demo.exceptions.AuthenticationFailed;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -38,9 +43,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginInfo credentials, HttpSession session){
-        ResponseEntity<String> response = new ResponseEntity<>(this.userService.authenticate(credentials),HttpStatus.ACCEPTED);
+        ResponseEntity<String> response = new ResponseEntity<>(this.userService.authenticate(credentials), HttpStatus.ACCEPTED);
         session.setAttribute("user", credentials.getUsername());
-        return response;   
+        return response;
     }
 
     @PostMapping("/logout")

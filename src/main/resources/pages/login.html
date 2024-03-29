@@ -52,46 +52,47 @@
       <input type="text" id="usernameInput" name="username" placeholder="Username">
       <input type="password" id="passwordInput" name="password" placeholder="Password">
       <input type="submit" value="Login">
-      <a href="create.html">Create an Account</a>
+      <a href="http://localhost:8080/page/create">Create an Account</a>
     </form>
   </div>
 </body>
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission behavior
 
-        const username = document.getElementById('usernameInput').value;
-        const password = document.getElementById('passwordInput').value;
+  async function login(){
+    const username = document.getElementById('usernameInput').value;
+    const password = document.getElementById('passwordInput').value;
 
-        const loginData = {
-            username: username,
-            password: password
-        };
+    const headersList = {
+      "Accept": "*/*",
+      "Content-Type": "application/json",
+    }
 
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            'credentials': 'include'
-            },
-            body: JSON.stringify(loginData)
-        })
-        .then(response => {
-            // Handle the response from the server
-            if (response.status === 202) {
-              // Login successful
-              sessionStorage.setItem("user", username)
-              window.location.href = "home.html"
-            } else {
-              // Login failed
-              alert("login attempt failed: please try again");
-            }
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the request
-            alert("Something went wrong, check the console for details")
-            console.error('Error:', error);
-        });
-    });
+    const loginData = {
+        username: username,
+        password: password
+    };
+
+    const loginBody = JSON.stringify(loginData);
+
+    const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: headersList,
+        credentials: 'include',
+        body: loginBody
+    }) 
+    if (response.status === 202) {
+      // Login successful
+      sessionStorage.setItem("user", username)
+      window.location.replace("http://localhost:8080/page/home");
+    } else {
+      // Login failed
+      alert("login attempt failed: please try again");
+    }
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission behavior
+      login();
+  });
   </script>
 </html>

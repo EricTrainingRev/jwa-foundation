@@ -74,7 +74,7 @@
             if (response.status === 201) {
                 // User creation successful
                 alert(`Account created successfully with username "${username}" and password "${password}"`);
-                window.location.href = 'login.html';
+                window.location.replace("http://localhost:8080/page/login");
             } else {
                 // User creation failed
                 alert(`Account creation failed with username "${username}" and password "${password}"`);
