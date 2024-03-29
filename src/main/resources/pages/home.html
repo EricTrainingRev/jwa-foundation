@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <style>
+        /* CSS styles for the table, select, and input */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        body {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        select {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        input {
+            margin-top: 10px;
+            padding: 5px;
+        }
+
+        .submit-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="greeting">Welcome to the Home Page</h1>
+
+    <table id="celestialTable">
+        <tr>
+            <th>Type</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Owner</th>
+        </tr>
+        <!-- Add rows for each celestial object here -->
+    </table>
+
+    <select id="locationSelect">
+        <option value="moon">Moon</option>
+        <option value="planet">Planet</option>
+    </select>
+
+    <div id="inputContainer"></div>
+
+    <script>
+        populateCelestialTable();
+        greeting.textContent = `Welcome to the Home Page ${sessionStorage.getItem("user")}`
+
+        document.getElementById('locationSelect').addEventListener('change', function() {
+            let selectedValue = this.value;
+            let inputContainer = document.getElementById('inputContainer');
+            inputContainer.innerHTML = '';
+
+            if (selectedValue === 'planet') {
+                let planetNameInput = document.createElement('input');
+                planetNameInput.type = 'text';
+                planetNameInput.id = 'planetNameInput';
+                planetNameInput.name = 'Planet Name';
+                planetNameInput.placeholder = 'Enter Planet Name';
+                inputContainer.appendChild(planetNameInput);
+
+                let submitButton = document.createElement('button');
+                submitButton.textContent = 'Submit Planet';
+                submitButton.className = 'submit-button';
+                submitButton.addEventListener('click', function() {
+                    let planetName = document.getElementById('planetNameInput').value;
+                    // Perform actions with the planet name
+                });
+                inputContainer.appendChild(submitButton);
+            } else if (selectedValue === 'moon') {
+                let moonNameInput = document.createElement('input');
+                moonNameInput.type = 'text';
+                moonNameInput.id = 'moonNameInput';
+                moonNameInput.name = 'Moon Name';
+                moonNameInput.placeholder = 'Enter Moon Name';
+                inputContainer.appendChild(moonNameInput);
+
+                let orbitedPlanetInput = document.createElement('input');
+                orbitedPlanetInput.type = 'text';
+                orbitedPlanetInput.id = 'orbitedPlanetInput';
+                orbitedPlanetInput.name = 'Orbited Planet';
+                orbitedPlanetInput.placeholder = 'Enter Orbited Planet';
+                inputContainer.appendChild(orbitedPlanetInput);
+
+                let submitButton = document.createElement('button');
+                submitButton.textContent = 'Submit Moon';
+                submitButton.className = 'submit-button';
+                submitButton.addEventListener('click', function() {
+                    let moonName = document.getElementById('moonNameInput').value;
+                    let orbitedPlanet = document.getElementById('orbitedPlanetInput').value;
+                    // Perform actions with the moon name and orbited planet
+                });
+                inputContainer.appendChild(submitButton);
+            }
+        });
+
+    async function populateCelestialTable() {
+    const response = await fetch('http://localhost:8080/api/planet', {'credentials': 'include'});
+    if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        const table = document.getElementById('celestialTable');
+        data.forEach(planet => {
+            const row = table.insertRow();
+            const typeCell = row.insertCell(0);
+            const idCell = row.insertCell(1);
+            const nameCell = row.insertCell(2);
+            const ownerCell = row.insertCell(3);
+            typeCell.textContent = 'planet';
+            idCell.textContent = planet.planetId;
+            nameCell.textContent = planet.planetName;
+            ownerCell.textContent = planet.ownerId;
+        });
+    }
+    }
+    </script>
+</body>
+</html>
