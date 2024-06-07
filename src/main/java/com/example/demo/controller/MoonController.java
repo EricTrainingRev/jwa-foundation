@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import com.example.demo.entities.Moon;
 import com.example.demo.exceptions.AuthenticationFailed;
 import com.example.demo.exceptions.EntityNotFound;
-import com.example.demo.service.MoonService;
+import com.example.demo.service.moon.MoonServiceImp;
 
 public class MoonController {
 
     private static Logger moonLogger = LoggerFactory.getLogger(MoonController.class);
 
-    private MoonService moonService;
+    private MoonServiceImp moonService;
 
     public void entityNotFound(EntityNotFound e) {
         moonLogger.error(e.getLocalizedMessage(), e);

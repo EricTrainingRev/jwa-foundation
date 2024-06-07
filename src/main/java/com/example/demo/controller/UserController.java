@@ -6,14 +6,14 @@ import org.slf4j.LoggerFactory;
 
 
 import com.example.demo.entities.User;
-import com.example.demo.service.UserService;
 import com.example.demo.exceptions.AuthenticationFailed;
+import com.example.demo.service.user.UserServiceImp;
 
 public class UserController {
 
     private static Logger userLogger = LoggerFactory.getLogger(UserController.class);
 
-    private UserService userService;
+    private UserServiceImp userService;
 
     public void notAuthorized(AuthenticationFailed e) {
         userLogger.error(e.getLocalizedMessage(), e);

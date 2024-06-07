@@ -1,0 +1,16 @@
+package com.example.demo.service.moon;
+
+import java.util.List;
+
+import com.example.demo.entities.Moon;
+
+public interface MoonService<T> {
+    
+    Moon createMoon(Moon moon);
+    Moon selectMoon(T idOrName);
+    List<Moon> selectAllMoons();
+    List<Moon> selectByPlanet(int planetId);
+    Moon updateMoon(Moon moon);
+    String deleteMoon(T idOrName);
+
+}

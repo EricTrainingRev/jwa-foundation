@@ -9,13 +9,13 @@ import org.slf4j.LoggerFactory;
 import com.example.demo.entities.Planet;
 import com.example.demo.exceptions.AuthenticationFailed;
 import com.example.demo.exceptions.EntityNotFound;
-import com.example.demo.service.PlanetService;
+import com.example.demo.service.planet.PlanetServiceImp;
 
 public class PlanetController {
 
     private static Logger planetLogger = LoggerFactory.getLogger(PlanetController.class);
 
-    private PlanetService planetService;
+    private PlanetServiceImp planetService;
 
     public void entityNotFound(EntityNotFound e) {
         planetLogger.error(e.getLocalizedMessage(), e);

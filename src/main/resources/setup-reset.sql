@@ -23,8 +23,12 @@ create table planets(
 	ownerId integer references users(id)
 );
 
+insert into planets (name, ownerId) values ('Earth', 1);
+
 create table moons(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
 	myPlanetId integer references planets(id)
 );
+
+insert into moons (name, myPlanetId) values ('Luna', 1);
