@@ -1,25 +1,30 @@
-drop table if exists users, planets, moons;
+-- Use this script to set up your Planetarium database
+
+-- needed for referential integrity enforcement
+PRAGMA foreign_keys = 1;
+
+drop table if exists moons;
+
+drop table if exists planets;
+
+drop table if exists users;
 
 create table users(
-	user_id serial primary key,
-	user_username varchar(30) unique,
-	user_password varchar(30)
+	id integer primary key,
+	username text unique not null check (length(username) <= 30),
+	password text not null check (length(password) <= 30)
 );
 
+insert into users (username, password) values ('Batman', 'I am the night');
+
 create table planets(
-	planet_id serial primary key,
-	planet_name varchar(30) unique,
-	owner_id int references users(user_id) on delete cascade
+	id integer primary key,
+	name text not null check (length(name) <= 30),
+	ownerId integer references users(id)
 );
 
 create table moons(
-	moon_id serial primary key,
-	moon_name varchar(30) unique,
-	owner_id int references planets(planet_id) on delete cascade
+	id integer primary key,
+	name text not null check (length(name) <= 30),
+	myPlanetId integer references planets(id)
 );
-
-insert into users values (default, 'login','user');
-
-insert into planets values (default, 'getPlanet', 1);
-
-insert into moons values (default, 'getMoon', 1);
