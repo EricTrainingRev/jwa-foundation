@@ -52,7 +52,7 @@
       <input type="text" id="usernameInput" name="username" placeholder="Username">
       <input type="password" id="passwordInput" name="password" placeholder="Password">
       <input type="submit" value="Login">
-      <a href="http://localhost:8080/page/create">Create an Account</a>
+      <a href="http://localhost:8080/register">Create an Account</a>
     </form>
   </div>
 </body>
@@ -85,7 +85,7 @@
       const data = await response.json();
       sessionStorage.setItem("user", data.userUsername)
       sessionStorage.setItem("userId", data.userId)
-      window.location.replace("http://localhost:8080/page/home");
+      window.location.replace("http://localhost:8080/planetarium/home");
     } else {
       // Login failed
       alert("login attempt failed: please try again");

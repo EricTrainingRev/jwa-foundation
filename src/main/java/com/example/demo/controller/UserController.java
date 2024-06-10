@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.User;
+import com.example.demo.exceptions.AuthenticationFailed;
 import com.example.demo.exceptions.UserFail;
 import com.example.demo.service.user.UserService;
 
@@ -28,16 +29,17 @@ public class UserController {
     }
 
     public void login(Context ctx){
-        User user = ctx.bodyAsClass(User.class);
+        User credentials = ctx.bodyAsClass(User.class);
+        User user;
         try {
-            user = userService.authenticate(user);
+            user = userService.authenticate(credentials);
+            ctx.sessionAttribute("user", user.getUsername());
+            ctx.status(202);
+            ctx.json(user);
         } catch (UserFail e) {
             ctx.status(401);
             ctx.json(e.getMessage());
         }
-        ctx.sessionAttribute("user", user.getUsername());
-        ctx.status(200);
-        ctx.json(user);
     }
 
 
@@ -45,5 +47,11 @@ public class UserController {
         ctx.req().getSession().invalidate();
         ctx.json("Logged out");
         ctx.status(401);
+    }
+
+    public void authenticateUser(Context ctx){
+        if(ctx.req().getSession(false) == null){
+            throw new AuthenticationFailed("Please log in first");
+        }
     }
 }

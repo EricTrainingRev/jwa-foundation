@@ -4,38 +4,42 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import io.javalin.http.Context;
+
 public class ViewController {
 
     //TODO: Add a Utility Class that loads HTML files once and stores them in a Map, access
     //pages with a single method instead of multiple
 
-    public String login(){
+    //TODO: add a error page for when there is an error loading a page
+
+    public void login(Context ctx){
         try {
             String content = Files.readString(Paths.get("src/main/resources/pages/login.html"));
-            return content;
+            ctx.html(content);
+            ctx.status(200);
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error loading file content";
-        }
+            ctx.status(400);}
     }
 
-    public String home(){
+    public void home(Context ctx){
         try {
             String content = Files.readString(Paths.get("src/main/resources/pages/home.html"));
-            return content;
+            ctx.html(content);
+            ctx.status(200);
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error loading file content";
-        }
+            ctx.status(400);}
     }
 
-    public String create(){
+    public void register(Context ctx){
         try {
             String content = Files.readString(Paths.get("src/main/resources/pages/create.html"));
-            return content;
+            ctx.html(content);
+            ctx.status(200);
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error loading file content";
-        }
+            ctx.status(400);}
     }
 }
