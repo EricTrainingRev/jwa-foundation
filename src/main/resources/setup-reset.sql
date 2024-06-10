@@ -21,7 +21,7 @@ create table planets(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
 	ownerId integer,
-	foreign key(ownerId) references users(id)
+	foreign key(ownerId) references users(id) on delete cascade
 );
 
 insert into planets (name, ownerId) values ('Earth', 1);
@@ -31,7 +31,7 @@ create table moons(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
 	myPlanetId integer,
-	foreign key(myPlanetId) references planets(id)
+	foreign key(myPlanetId) references planets(id) on delete cascade
 );
 
 insert into moons (name, myPlanetId) values ('Luna', 1);
