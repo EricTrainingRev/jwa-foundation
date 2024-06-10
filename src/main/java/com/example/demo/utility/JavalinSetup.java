@@ -70,21 +70,22 @@ public class JavalinSetup {
          * Mapping Planet Routes
          */
 
-        app.get("/planetarium/planets", ctx -> planetController.findAll(ctx));
-        app.get("/planetarium/planets/owner/{ownerId}", ctx -> planetController.findAllByOwner(ctx));
-        app.get("/planetarium/planets/{identifier}", ctx -> planetController.findByIdentifier(ctx));
-        app.post("/planetarium/planets", ctx -> planetController.createPlanet(ctx));
-        app.delete("/planetarium/planets/{identifier}", ctx -> planetController.deletePlanet(ctx));
+        app.get("/planetarium/planet", ctx -> planetController.findAll(ctx));
+        app.get("/planetarium/planet/owner/{ownerId}", ctx -> planetController.findAllByOwner(ctx));
+        app.get("/planetarium/planet/{identifier}", ctx -> planetController.findByIdentifier(ctx));
+        app.post("/planetarium/planet", ctx -> planetController.createPlanet(ctx));
+        app.patch("/planetarium/planet", ctx -> planetController.updatePlanet(ctx));
+        app.delete("/planetarium/planet/{identifier}", ctx -> planetController.deletePlanet(ctx));
 
         /*
          * Mapping Moon Routes
          */
 
-        app.get("/planetarium/moons", ctx -> moonController.findAll(ctx));
-        app.get("/planetarium/moons/owner/{planetId}", ctx -> moonController.findAllByPlanet(ctx));
-        app.get("/planetarium/moons/{identifier}", ctx -> moonController.findByIdentifier(ctx));
-        app.post("/planetarium/moons", ctx -> moonController.createMoon(ctx));
-        app.delete("/planetarium/moons/{identifier}", ctx -> moonController.deleteMoon(ctx));
+        app.get("/planetarium/moon", ctx -> moonController.findAll(ctx));
+        app.get("/planetarium/moon/owner/{planetId}", ctx -> moonController.findAllByPlanet(ctx));
+        app.get("/planetarium/moon/{identifier}", ctx -> moonController.findByIdentifier(ctx));
+        app.post("/planetarium/moon", ctx -> moonController.createMoon(ctx));
+        app.delete("/planetarium/moon/{identifier}", ctx -> moonController.deleteMoon(ctx));
     }
     
 }

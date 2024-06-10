@@ -6,11 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.demo.entities.Moon;
-import com.example.demo.entities.Planet;
 import com.example.demo.exceptions.AuthenticationFailed;
-import com.example.demo.exceptions.EntityNotFound;
+import com.example.demo.exceptions.MoonFail;
 import com.example.demo.service.moon.MoonService;
-import com.example.demo.service.moon.MoonServiceImp;
 
 import io.javalin.http.Context;
 
@@ -36,34 +34,49 @@ public class MoonController {
     }
 
     public void findByIdentifier(Context ctx) {
-        String identifier = ctx.pathParam("identifier");
-        Moon moon;
-        if(identifier.matches("^[0-9]+$")) {
-            moon = moonService.selectMoon(Integer.parseInt(identifier));
-        } else {
-            moon = moonService.selectMoon(identifier);
+        try {
+            String identifier = ctx.pathParam("identifier");
+            Moon moon;
+            if(identifier.matches("^[0-9]+$")) {
+                moon = moonService.selectMoon(Integer.parseInt(identifier));
+            } else {
+                moon = moonService.selectMoon(identifier);
+            }
+            ctx.json(moon);
+            ctx.status(200);
+        } catch (MoonFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(404);
         }
-        ctx.json(moon);
-        ctx.status(200);
     }
 
     public void createMoon(Context ctx) {
-        Moon moon = ctx.bodyAsClass(Moon.class);
-        Moon createdMoon = moonService.createMoon(moon);
-        ctx.json(createdMoon);
-        ctx.status(201);
+        try {
+            Moon moon = ctx.bodyAsClass(Moon.class);
+            Moon createdMoon = moonService.createMoon(moon);
+            ctx.json(createdMoon);
+            ctx.status(201);
+        } catch (MoonFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(400);
+        }
     }
 
     public void deleteMoon(Context ctx) {
-        String identifier = ctx.pathParam("identifier");
-        String responseMessage;
-        if(identifier.matches("^[0-9]+$")) {
-            responseMessage = moonService.deleteMoon(Integer.parseInt(identifier));
-        } else {
-            responseMessage = moonService.deleteMoon(identifier);
+        try {
+            String identifier = ctx.pathParam("identifier");
+            String responseMessage;
+            if(identifier.matches("^[0-9]+$")) {
+                responseMessage = moonService.deleteMoon(Integer.parseInt(identifier));
+            } else {
+                responseMessage = moonService.deleteMoon(identifier);
+            }
+            ctx.json(responseMessage);
+            ctx.status(200);
+        } catch (MoonFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(400);
         }
-        ctx.json(responseMessage);
-        ctx.status(200);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.demo.entities.Planet;
 import com.example.demo.exceptions.AuthenticationFailed;
 import com.example.demo.exceptions.EntityNotFound;
+import com.example.demo.exceptions.PlanetFail;
 import com.example.demo.service.planet.PlanetService;
 
 import io.javalin.http.Context;
@@ -31,34 +32,63 @@ public class PlanetController {
     }
 
     public void findByIdentifier(Context ctx) {
-        String identifier = ctx.pathParam("identifier");
-        Planet planet;
-        if(identifier.matches("^[0-9]+$")) {
-            planet = planetService.selectPlanet(Integer.parseInt(identifier));
-        } else {
-            planet = planetService.selectPlanet(identifier);
+        try {
+            String identifier = ctx.pathParam("identifier");
+            Planet planet;
+            if(identifier.matches("^[0-9]+$")) {
+                planet = planetService.selectPlanet(Integer.parseInt(identifier));
+            } else {
+                planet = planetService.selectPlanet(identifier);
+            }
+            ctx.json(planet);
+            ctx.status(200);
+        } catch (PlanetFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(404);
         }
-        ctx.json(planet);
-        ctx.status(200);
     }
 
     public void createPlanet(Context ctx) {
-        Planet planet = ctx.bodyAsClass(Planet.class);
-        Planet createdPlanet = planetService.createPlanet(planet);
-        ctx.json(createdPlanet);
-        ctx.status(201);
+        try {
+            Planet planet = ctx.bodyAsClass(Planet.class);
+            Planet createdPlanet = planetService.createPlanet(planet);
+            ctx.json(createdPlanet);
+            ctx.status(201);            
+        } catch (PlanetFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(400);
+        }
+
+    }
+
+    public void updatePlanet(Context ctx){
+        try {
+            Planet planet = ctx.bodyAsClass(Planet.class);
+            Planet updatedPlanet = planetService.updatePlanet(planet);
+            ctx.json(updatedPlanet);
+            ctx.status(200);
+        } catch (PlanetFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(400);
+        }
+
     }
 
     public void deletePlanet(Context ctx) {
-        String identifier = ctx.pathParam("identifier");
-        String responseMessage;
-        if(identifier.matches("^[0-9]+$")) {
-            responseMessage = planetService.deletePlanet(Integer.parseInt(identifier));
-        } else {
-            responseMessage = planetService.deletePlanet(identifier);
+        try {
+            String identifier = ctx.pathParam("identifier");
+            String responseMessage;
+            if(identifier.matches("^[0-9]+$")) {
+                responseMessage = planetService.deletePlanet(Integer.parseInt(identifier));
+            } else {
+                responseMessage = planetService.deletePlanet(identifier);
+            }
+            ctx.json(responseMessage);
+            ctx.status(200);
+        } catch (PlanetFail e) {
+            ctx.result(e.getMessage());
+            ctx.status(400);
         }
-        ctx.json(responseMessage);
-        ctx.status(200);
     }
 
 }

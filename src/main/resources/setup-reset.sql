@@ -20,15 +20,19 @@ insert into users (username, password) values ('Batman', 'I am the night');
 create table planets(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
-	ownerId integer references users(id)
+	ownerId integer,
+	foreign key(ownerId) references users(id)
 );
 
 insert into planets (name, ownerId) values ('Earth', 1);
+insert into planets (name, ownerId) values ('Mars', 1);
 
 create table moons(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
-	myPlanetId integer references planets(id)
+	myPlanetId integer,
+	foreign key(myPlanetId) references planets(id)
 );
 
 insert into moons (name, myPlanetId) values ('Luna', 1);
+insert into moons (name, myPlanetId) values ('Titan', 2);

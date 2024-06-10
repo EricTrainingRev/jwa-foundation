@@ -9,10 +9,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.stream.Stream;
 
+import org.sqlite.SQLiteConfig;
+
 public class DatabaseConnector {
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:src/main/resources/planetarium-db.db");
+        SQLiteConfig config = new SQLiteConfig();
+        config.enforceForeignKeys(true);
+        return DriverManager.getConnection("jdbc:sqlite:src/main/resources/planetarium-db.db", config.toProperties());
     }
 
     public static void resetTestDatabase() {
