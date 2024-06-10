@@ -1,33 +1,49 @@
 package com.example.demo.controller;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 import com.example.demo.entities.User;
-import com.example.demo.exceptions.AuthenticationFailed;
-import com.example.demo.service.user.UserServiceImp;
+import com.example.demo.exceptions.UserFail;
+import com.example.demo.service.user.UserService;
+
+import io.javalin.http.Context;
 
 public class UserController {
 
-    private static Logger userLogger = LoggerFactory.getLogger(UserController.class);
+    private UserService userService;
 
-    private UserServiceImp userService;
 
-    public void notAuthorized(AuthenticationFailed e) {
-        userLogger.error(e.getLocalizedMessage(), e);
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    public void createUser(User newUser) {
-         // TODO: implement
+    public void createUser(Context ctx) {
+        try {
+            User user = ctx.bodyAsClass(User.class);
+            String result = userService.createUser(user);
+            ctx.status(201);
+            ctx.json(result);
+        } catch (UserFail e) {
+            ctx.status(400);
+            ctx.json(e.getMessage());
+        }
     }
 
-    public void login(User credentials){
-        // TODO: implement
+    public void login(Context ctx){
+        User user = ctx.bodyAsClass(User.class);
+        try {
+            user = userService.authenticate(user);
+        } catch (UserFail e) {
+            ctx.status(401);
+            ctx.json(e.getMessage());
+        }
+        ctx.sessionAttribute("user", user.getUsername());
+        ctx.status(200);
+        ctx.json(user);
     }
 
-    public void logout(){
-        // TODO: implement
+
+    public void logout(Context ctx){
+        ctx.req().getSession().invalidate();
+        ctx.json("Logged out");
+        ctx.status(401);
     }
 }

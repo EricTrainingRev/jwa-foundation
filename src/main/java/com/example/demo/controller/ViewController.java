@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 
 public class ViewController {
 
+    //TODO: Add a Utility Class that loads HTML files once and stores them in a Map, access
+    //pages with a single method instead of multiple
+
     public String login(){
         try {
             String content = Files.readString(Paths.get("src/main/resources/pages/login.html"));

@@ -17,8 +17,19 @@ public class PlanetServiceImp<T> implements PlanetService<T> {
 
     @Override
     public Planet createPlanet(Planet planet) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createPlanet'");
+        if (planet.getPlanetName().length() < 1 || planet.getPlanetName().length() > 30) {
+            throw new PlanetFail("Planet name must be between 1 and 30 characters");
+        }
+        Optional<Planet> existingPlanet = planetDao.readPlanet(planet.getPlanetName());
+        if (existingPlanet.isPresent()) {
+            throw new PlanetFail("Planet name must be unique");
+        }
+        Optional<Planet> createdPlanet = planetDao.createPlanet(planet);
+        if (createdPlanet.isPresent()) {
+            return createdPlanet.get();
+        } else {
+            throw new PlanetFail("Planet creation failed, please try again");
+        }
     }
 
     @Override
