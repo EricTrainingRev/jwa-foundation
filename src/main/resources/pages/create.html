@@ -58,8 +58,8 @@
         const password = document.getElementById('passwordInput').value;
 
         const loginData = {
-            userUsername: username,
-            userPassword: password
+            username: username,
+            password: password
         };
 
         fetch('http://localhost:8080/register', {
@@ -70,19 +70,15 @@
             body: JSON.stringify(loginData)
         })
         .then(response => {
-            // Handle the response from the server
             if (response.status === 201) {
-                // User creation successful
                 alert(`Account created successfully with username "${username}" and password "${password}"`);
-                window.location.replace("http://localhost:8080/page/login");
+                window.location.replace("http://localhost:8080/");
             } else {
-                // User creation failed
                 alert(`Account creation failed with username "${username}" and password "${password}"`);
             }
         })
         .catch(error => {
-            // Handle any errors that occurred during the request
-            alert("Something went wrong, check the console for details")
+            alert("Something went wrong, please try again")
             console.error('Error:', error);
         });
     });

@@ -81,13 +81,11 @@
         body: loginBody
     }) 
     if (response.status === 202) {
-      // Login successful
       const data = await response.json();
       sessionStorage.setItem("user", data.userUsername)
       sessionStorage.setItem("userId", data.userId)
       window.location.replace("http://localhost:8080/planetarium/home");
     } else {
-      // Login failed
       alert("login attempt failed: please try again");
     }
   }
