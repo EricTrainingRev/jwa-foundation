@@ -48,10 +48,17 @@
             margin-left: 10px;
             padding: 5px 10px;
         }
+        .logout-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
     <h1 id="greeting">Welcome to the Home Page</h1>
+    <button class="logout-button" id="logoutButton" onclick="logout()">Logout</button>
+
 
     <div id="deleteContainer">
         <input type="text" id="deleteInput" placeholder="name for celestial body to be deleted">
@@ -76,6 +83,7 @@
     <div id="inputContainer"></div>
 
     <script>
+        
         populateCelestialTable();
         greeting.textContent = `Welcome to the Home Page ${sessionStorage.getItem("user")}`
 
@@ -227,6 +235,12 @@
             } else {
                 alert(`Failed to delete ${selectedOption} with name ${name}`);
             }
+        }
+
+        function logout() {
+            sessionStorage.removeItem("user");
+            sessionStorage.removeItem("userId");
+            window.location.replace("http://localhost:8080");
         }
     </script>
 </body>

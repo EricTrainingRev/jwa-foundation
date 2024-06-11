@@ -14,6 +14,7 @@ public class Main {
 				});
 			});
 			config.bundledPlugins.enableDevLogging();
+			config.staticFiles.add("/pages");
 		});
 
 		JavalinSetup.mapRoutes(app);

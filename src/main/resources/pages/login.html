@@ -84,7 +84,7 @@
       const data = await response.json();
       sessionStorage.setItem("user", data.username)
       sessionStorage.setItem("userId", data.id)
-      window.location.replace("http://localhost:8080/planetarium/home");
+      window.location.replace("http://localhost:8080/planetarium");
     } else {
       alert("login attempt failed: please try again");
     }

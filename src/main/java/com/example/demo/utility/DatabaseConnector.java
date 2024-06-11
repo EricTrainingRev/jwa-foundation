@@ -16,7 +16,8 @@ public class DatabaseConnector {
     public static Connection getConnection() throws SQLException {
         SQLiteConfig config = new SQLiteConfig();
         config.enforceForeignKeys(true);
-        return DriverManager.getConnection("jdbc:sqlite:src/main/resources/planetarium-db.db", config.toProperties());
+        String url = System.getenv("PLANETARIUM");
+        return DriverManager.getConnection(url, config.toProperties());
     }
 
     public static void resetTestDatabase() {

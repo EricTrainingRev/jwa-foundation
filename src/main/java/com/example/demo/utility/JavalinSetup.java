@@ -54,9 +54,15 @@ public class JavalinSetup {
          * Mapping Pages to Javalin app
          */
 
-        app.get("/", ctx -> viewController.login(ctx));
-        app.get("/register", ctx -> viewController.register(ctx));
-        app.get("/planetarium/home", ctx -> viewController.home(ctx));
+        app.get("/", ctx -> ctx.redirect("login.html"));
+        app.get("/register", ctx -> ctx.redirect("create.html"));
+        app.get("/planetarium", ctx -> {
+            if(ctx.sessionAttribute("user") == null){
+                ctx.redirect("login.html");
+            } else {
+                ctx.redirect("home.html");
+            }
+        });
 
         /*
          * Mapping User Routes
