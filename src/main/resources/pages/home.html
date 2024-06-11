@@ -106,7 +106,7 @@
                         "Accept": "*/*",
                         "Content-Type": "application/json"
                     }
-                    fetch('http://localhost:8080/api/planet', {
+                    fetch('http://localhost:8080/planetarium/planet', {
                         method: 'POST',
                         body: bodyJson,
                         headers: headersList,
@@ -117,7 +117,7 @@
                             populateCelestialTable();
                         }
                     }).catch(error => {
-                        alert("Something went wrong, check the console for details");
+                        alert("Something went wrong, please try again");
                     })
                 });
                 inputContainer.appendChild(submitButton);
@@ -151,7 +151,7 @@
                         "Accept": "*/*",
                         "Content-Type": "application/json"
                     }
-                    fetch('http://localhost:8080/api/moon', {
+                    fetch('http://localhost:8080/planetarium/moon', {
                         method: 'POST',
                         body: bodyJson,
                         headers: headersList,
@@ -162,7 +162,7 @@
                             populateCelestialTable();
                         }
                     }).catch(error => {
-                        alert("Something went wrong, check the console for details");
+                        alert("Something went wrong, please try again");
                     })                });
                 inputContainer.appendChild(submitButton);
             }
@@ -170,7 +170,7 @@
 
         async function populateCelestialTable() {
         document.getElementById('celestialTable').innerHTML = '<tr><th>Type</th><th>ID</th><th>Name</th><th>Owner</th></tr>';
-        const response = await fetch('http://localhost:8080/api/planet', {credentials: 'include'});
+        const response = await fetch('http://localhost:8080/planetarium/planet', {credentials: 'include'});
         if (response.ok) {
             const data = await response.json();
             console.log(data);
@@ -187,7 +187,7 @@
                 ownerCell.textContent = planet.ownerId;
             });
         }
-        const moonResponse = await fetch('http://localhost:8080/api/moon', {credentials: 'include'});
+        const moonResponse = await fetch('http://localhost:8080/planetarium/moon', {credentials: 'include'});
             if (moonResponse.ok) {
                 const moonData = await moonResponse.json();
                 const table = document.getElementById('celestialTable');
@@ -207,13 +207,13 @@
         
         async function deleteCelestial() {
             const selectedOption = document.getElementById('locationSelect').value;
-            const name = document.getElementById('deleteInput').value;
+            const identifier = document.getElementById('deleteInput').value;
 
             let url;
             if (selectedOption === 'moon') {
-                url = `http://localhost:8080/api/moon/${name}`;
+                url = `http://localhost:8080/planetarium/moon/${identifier}`;
             } else if (selectedOption === 'planet') {
-                url = `http://localhost:8080/api/planet/${name}`;
+                url = `http://localhost:8080/planetarium/planet/${identifier}`;
             } else {
                 alert('Invalid selection: choose moon or planet to delete');
                 return;
@@ -225,7 +225,7 @@
             if (response.status === 200) {
                 populateCelestialTable();
             } else {
-                console.error(`Failed to delete ${selectedOption} with name ${name}`);
+                alert(`Failed to delete ${selectedOption} with name ${name}`);
             }
         }
     </script>
