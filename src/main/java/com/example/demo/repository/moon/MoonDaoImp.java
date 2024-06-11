@@ -44,7 +44,7 @@ public class MoonDaoImp implements MoonDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Moon moon = new Moon();
-                moon.setMoonId(rs.getInt("moonId"));
+                moon.setMoonId(rs.getInt("id"));
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 return Optional.of(moon);
@@ -64,7 +64,7 @@ public class MoonDaoImp implements MoonDao {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 Moon moon = new Moon();
-                moon.setMoonId(rs.getInt("moonId"));
+                moon.setMoonId(rs.getInt("id"));
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 return Optional.of(moon);
@@ -84,7 +84,7 @@ public class MoonDaoImp implements MoonDao {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Moon moon = new Moon();
-                moon.setMoonId(rs.getInt("moonId"));
+                moon.setMoonId(rs.getInt("id"));
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 moons.add(moon);
@@ -105,7 +105,7 @@ public class MoonDaoImp implements MoonDao {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 Moon moon = new Moon();
-                moon.setMoonId(rs.getInt("moonId"));
+                moon.setMoonId(rs.getInt("id"));
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 moons.add(moon);
