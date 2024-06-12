@@ -20,26 +20,4 @@ public class DatabaseConnector {
         return DriverManager.getConnection(url, config.toProperties());
     }
 
-    public static void resetTestDatabase() {
-        Path sql = Path.of("src/main/resources/setup-reset.sql");
-        StringBuilder sqlBuilder = new StringBuilder();
-        try (Connection conn = getConnection(); Stream<String> lines = Files.lines(sql)) {
-            conn.setAutoCommit(false);
-            lines.forEach(sqlBuilder::append);
-            String sqlString = sqlBuilder.toString();
-            String [] sqlStatements = sqlString.split(";");
-            for (String sqlStatement : sqlStatements) {
-                try (Statement stmt = conn.createStatement()) {
-                    stmt.executeUpdate(sqlStatement);
-                }
-            }
-            conn.commit();
-        } catch (IOException | SQLException e) {
-            System.out.println("Error: " +e.getMessage());
-        }
-    }
-
-    public static void main(String[] args) {
-            resetTestDatabase();
-    }
 }
