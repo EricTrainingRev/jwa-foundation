@@ -237,10 +237,16 @@
             }
         }
 
-        function logout() {
-            sessionStorage.removeItem("user");
-            sessionStorage.removeItem("userId");
-            window.location.replace("http://localhost:8080");
+        async function logout() {
+            const response = await fetch('http://localhost:8080/logout', {method: "POST", credentials: 'include'});
+            if (response.status === 401) {
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("userId");
+                window.location.replace("http://localhost:8080");            
+            } else {
+                alert("Something went wrong, please try again");
+            }
+
         }
     </script>
 </body>

@@ -45,6 +45,7 @@ public class JavalinSetup {
          */
 
         app.before("/planetarium/*", ctx -> userController.authenticateUser(ctx));
+        app.before("/planetarium", ctx -> userController.authenticateUser(ctx));
         app.exception(AuthenticationFailed.class, (e, ctx) -> {
             ctx.status(401);
             ctx.result(e.getMessage());
@@ -54,15 +55,9 @@ public class JavalinSetup {
          * Mapping Pages to Javalin app
          */
 
-        app.get("/", ctx -> ctx.redirect("login.html"));
-        app.get("/register", ctx -> ctx.redirect("create.html"));
-        app.get("/planetarium", ctx -> {
-            if(ctx.sessionAttribute("user") == null){
-                ctx.redirect("login.html");
-            } else {
-                ctx.redirect("home.html");
-            }
-        });
+        app.get("/", ctx -> viewController.login(ctx));
+        app.get("/register", ctx -> viewController.register(ctx));
+        app.get("/planetarium", ctx -> viewController.home(ctx));
 
         /*
          * Mapping User Routes
