@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +19,10 @@ public class PlanetDaoImp implements PlanetDao {
     @Override
     public Optional<Planet> createPlanet(Planet planet) {
         try (Connection conn = DatabaseConnector.getConnection();
-             PreparedStatement stmt = conn.prepareStatement("INSERT INTO planets (name, ownerId) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS)){
+             PreparedStatement stmt = conn.prepareStatement("INSERT INTO planets (name, ownerId, image) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS)){
             stmt.setString(1, planet.getPlanetName());
             stmt.setInt(2, planet.getOwnerId());
+            stmt.setBytes(3, planet.imageDataAsByteArray());
             stmt.executeUpdate();
             try (ResultSet rs = stmt.getGeneratedKeys()){
                 if (rs.next()) {
@@ -91,6 +93,11 @@ public class PlanetDaoImp implements PlanetDao {
                     planet.setPlanetId(rs.getInt("id"));
                     planet.setPlanetName(rs.getString("name"));
                     planet.setOwnerId(rs.getInt("ownerId"));
+                    if(rs.getBytes("image") != null){
+                        byte[] imageDataAsBytes = rs.getBytes("image");
+                        String imageDataBase64 = Base64.getEncoder().encodeToString(imageDataAsBytes);
+                        planet.setImageData(imageDataBase64);
+                    }
                     planets.add(planet);
                 }
         } catch (SQLException e) {

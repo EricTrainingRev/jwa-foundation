@@ -1,3 +1,6 @@
+# DEV NOTES
+- moon creation input for planet Id request ID but takes in string, associates should find this
+
 # JWA Foundation Project
 
 ## Project Focus

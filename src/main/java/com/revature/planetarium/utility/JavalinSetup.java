@@ -42,8 +42,8 @@ public class JavalinSetup {
          * Mapping Authentication and exception handling
          */
 
-        app.before("/planetarium/*", ctx -> userController.authenticateUser(ctx));
-        app.before("/planetarium", ctx -> userController.authenticateUser(ctx));
+        app.before("/planetarium/*", userController::authenticateUser);
+        app.before("/planetarium", userController::authenticateUser);
         app.exception(AuthenticationFailed.class, (e, ctx) -> {
             ctx.status(401);
             ctx.result(e.getMessage());
@@ -53,38 +53,38 @@ public class JavalinSetup {
          * Mapping Pages to Javalin app
          */
 
-        app.get("/", ctx -> viewController.login(ctx));
-        app.get("/register", ctx -> viewController.register(ctx));
-        app.get("/planetarium", ctx -> viewController.home(ctx));
+        app.get("/", viewController::login);
+        app.get("/register", viewController::register);
+        app.get("/planetarium", viewController::home);
 
         /*
          * Mapping User Routes
          */
 
-        app.post("/login", ctx -> userController.login(ctx));
-        app.post("/register", ctx -> userController.createUser(ctx));
-        app.post("/logout", ctx -> userController.logout(ctx));
+        app.post("/login", userController::login);
+        app.post("/register", userController::createUser);
+        app.post("/logout", userController::logout);
 
         /*
          * Mapping Planet Routes
          */
 
-        app.get("/planetarium/planet", ctx -> planetController.findAll(ctx));
-        app.get("/planetarium/planet/owner/{ownerId}", ctx -> planetController.findAllByOwner(ctx));
-        app.get("/planetarium/planet/{identifier}", ctx -> planetController.findByIdentifier(ctx));
-        app.post("/planetarium/planet", ctx -> planetController.createPlanet(ctx));
-        app.patch("/planetarium/planet", ctx -> planetController.updatePlanet(ctx));
-        app.delete("/planetarium/planet/{identifier}", ctx -> planetController.deletePlanet(ctx));
+        app.get("/planetarium/planet", planetController::findAll);
+        app.get("/planetarium/planet/owner/{ownerId}", planetController::findAllByOwner);
+        app.get("/planetarium/planet/{identifier}", planetController::findByIdentifier);
+        app.post("/planetarium/planet", planetController::createPlanet);
+        app.patch("/planetarium/planet", planetController::updatePlanet);
+        app.delete("/planetarium/planet/{identifier}", planetController::deletePlanet);
 
         /*
          * Mapping Moon Routes
          */
 
-        app.get("/planetarium/moon", ctx -> moonController.findAll(ctx));
-        app.get("/planetarium/moon/owner/{planetId}", ctx -> moonController.findAllByPlanet(ctx));
-        app.get("/planetarium/moon/{identifier}", ctx -> moonController.findByIdentifier(ctx));
-        app.post("/planetarium/moon", ctx -> moonController.createMoon(ctx));
-        app.delete("/planetarium/moon/{identifier}", ctx -> moonController.deleteMoon(ctx));
+        app.get("/planetarium/moon", moonController::findAll);
+        app.get("/planetarium/moon/owner/{planetId}", moonController::findAllByPlanet);
+        app.get("/planetarium/moon/{identifier}", moonController::findByIdentifier);
+        app.post("/planetarium/moon", moonController::createMoon);
+        app.delete("/planetarium/moon/{identifier}", moonController::deleteMoon);
     }
     
 }

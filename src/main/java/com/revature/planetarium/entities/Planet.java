@@ -1,12 +1,15 @@
 package com.revature.planetarium.entities;
 
 
+import java.util.Base64;
+
 public class Planet {
     
 
     private int planetId;
     private String planetName;
     private int ownerId;
+    private byte[] imageData;
     
     public int getPlanetId() {
         return planetId;
@@ -25,6 +28,26 @@ public class Planet {
     }
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public void setImageData(String base64ImageData){
+        imageData = Base64.getDecoder().decode(base64ImageData);
+    }
+
+    public String getImageData(){
+        if (imageData != null){
+            return Base64.getEncoder().encodeToString(imageData);
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] imageDataAsByteArray(){
+        if(imageData != null){
+            return imageData;
+        } else {
+            return null;
+        }
     }
     @Override
     public String toString() {
@@ -55,9 +78,7 @@ public class Planet {
                 return false;
         } else if (!planetName.equals(other.planetName))
             return false;
-        if (ownerId != other.ownerId)
-            return false;
-        return true;
+        return ownerId == other.ownerId;
     }
 
 }

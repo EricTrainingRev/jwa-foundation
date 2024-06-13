@@ -21,6 +21,7 @@ create table planets(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
 	ownerId integer,
+	image blob,
 	foreign key(ownerId) references users(id) on delete cascade
 );
 

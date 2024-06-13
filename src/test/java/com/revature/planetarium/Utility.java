@@ -2,15 +2,22 @@ package com.revature.planetarium;
 
 import com.revature.planetarium.utility.DatabaseConnector;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Base64;
 import java.util.stream.Stream;
 
 public class Utility {
+
+    public static void main(String[] args) {
+        resetTestDatabase();
+    }
     public static void resetTestDatabase() {
         Path sql = Path.of("src/test/resources/setup-reset.sql");
         StringBuilder sqlBuilder = new StringBuilder();
@@ -27,6 +34,13 @@ public class Utility {
             conn.commit();
         } catch (IOException | SQLException e) {
             System.out.println("Error: " +e.getMessage());
+        }
+    }
+
+    public static String convertToBase64(String filePath) throws IOException {
+        try (FileInputStream fis = new FileInputStream(filePath)) {
+            byte[] fileBytes = fis.readAllBytes();
+            return Base64.getEncoder().encodeToString(fileBytes);
         }
     }
 }
