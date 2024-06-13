@@ -70,6 +70,13 @@
         <button id="deleteButton" onclick="deleteCelestial()">Delete</button>
     </div>
 
+    <select id="locationSelect">
+        <option value="moon">Moon</option>
+        <option value="planet">Planet</option>
+    </select>
+
+    <div id="inputContainer"></div>
+
     <table id="celestialTable">
         <tr>
             <th>Type</th>
@@ -79,13 +86,6 @@
         </tr>
         <!-- Add rows for each celestial object here -->
     </table>
-
-    <select id="locationSelect">
-        <option value="moon">Moon</option>
-        <option value="planet">Planet</option>
-    </select>
-
-    <div id="inputContainer"></div>
 
     <script>
         
@@ -129,6 +129,7 @@
         const moonResponse = await fetch('http://localhost:8080/planetarium/moon', {credentials: 'include'});
             if (moonResponse.ok) {
                 const moonData = await moonResponse.json();
+                console.log(moonData);
                 const table = document.getElementById('celestialTable');
                 moonData.forEach(moon => {
                     const row = table.insertRow();
@@ -136,10 +137,14 @@
                     const idCell = row.insertCell(1);
                     const nameCell = row.insertCell(2);
                     const ownerCell = row.insertCell(3);
+                    const imageCell = row.insertCell(4);
                     typeCell.textContent = 'moon';
                     idCell.textContent = moon.moonId;
                     nameCell.textContent = moon.moonName;
                     ownerCell.textContent = moon.ownerId;
+                    const moonImageElement = document.createElement('img');
+                    moonImageElement.src = `data:image/jpeg;base64,${moon.imageData}`;
+                    imageCell.appendChild(moonImageElement);
                 });
             }
         }
@@ -282,27 +287,29 @@
         async function createMoon(){
             let moonName = document.getElementById('moonNameInput').value;
             let orbitedPlanet = document.getElementById('orbitedPlanetInput').value;
+            let moonImageInput = document.getElementById('moonImageInput');
+            let imageData = await convertToBase64(moonImageInput);
             const bodyData = {
                 moonName: moonName,
-                ownerId: orbitedPlanet
+                ownerId: orbitedPlanet,
+                imageData: imageData
             }
             const bodyJson = JSON.stringify(bodyData);
             const headersList = {
                 "Accept": "*/*",
                 "Content-Type": "application/json"
             }
-            fetch('http://localhost:8080/planetarium/moon', {
+            const response = await fetch('http://localhost:8080/planetarium/moon', {
                 method: 'POST',
                 body: bodyJson,
                 headers: headersList,
                 credentials: 'include'
-            }).then(response => {
-                if (response.status === 201) {
-                    populateCelestialTable();
-                }
-            }).catch(error => {
+            })
+            if (response.status === 201) {
+                populateCelestialTable();
+            } else {
                 alert("Something went wrong, please try again");
-            })                
+            }             
         }
        
         function displayImageFromBase64(base64Data, imgElement, callback) {

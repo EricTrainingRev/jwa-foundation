@@ -27,14 +27,15 @@ public class Utility {
             lines.forEach(sqlBuilder::append);
             String sqlString = sqlBuilder.toString();
             String [] sqlStatements = sqlString.split(";");
-            int planetImageCount = 1;
+            int imageCount = 1;
             for (String sqlStatement : sqlStatements) {
                 if (sqlStatement.contains("?")){
+                    String type = sqlStatement.contains("moons") ? "moon" : "planet";
                     try(PreparedStatement ps = conn.prepareStatement(sqlStatement)){
-                        byte[] imageData = convertImgToByteArray(String.format("src/test/resources/Celestial-Images/planet-%d.jpg", planetImageCount));
+                        byte[] imageData = convertImgToByteArray(String.format("src/test/resources/Celestial-Images/%s-%d.jpg", type, imageCount));
                         ps.setBytes(1, imageData);
                         ps.executeUpdate();
-                        planetImageCount++;
+                        imageCount = imageCount == 2 ? 1 : 2;
                     }
                 } else {
                     try (Statement stmt = conn.createStatement()) {

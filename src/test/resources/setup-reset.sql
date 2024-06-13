@@ -32,8 +32,9 @@ create table moons(
 	id integer primary key,
 	name text not null check (length(name) <= 30),
 	myPlanetId integer,
+	image blob,
 	foreign key(myPlanetId) references planets(id) on delete cascade
 );
 
-insert into moons (name, myPlanetId) values ('Luna', 1);
-insert into moons (name, myPlanetId) values ('Titan', 2);
+insert into moons (name, myPlanetId, image) values ('Luna', 1, ?);
+insert into moons (name, myPlanetId, image) values ('Titan', 2, ?);

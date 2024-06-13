@@ -1,11 +1,15 @@
 package com.revature.planetarium.entities;
 
 
+import java.util.Base64;
+
 public class Moon {
 
     private int moonId;
     private String moonName;
     private int ownerId;
+    private byte[] imageData;
+
 
     public Moon(){}
 
@@ -32,6 +36,25 @@ public class Moon {
     }
     public void setOwnerId(int ownerId) {
         this.ownerId = ownerId;
+    }
+    public void setImageData(String base64ImageData){
+        imageData = Base64.getDecoder().decode(base64ImageData);
+    }
+
+    public String getImageData(){
+        if (imageData != null){
+            return Base64.getEncoder().encodeToString(imageData);
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] imageDataAsByteArray(){
+        if(imageData != null){
+            return imageData;
+        } else {
+            return null;
+        }
     }
     @Override
     public String toString() {
