@@ -25,8 +25,8 @@ create table planets(
 	foreign key(ownerId) references users(id) on delete cascade
 );
 
-insert into planets (name, ownerId) values ('Earth', 1);
-insert into planets (name, ownerId) values ('Mars', 1);
+insert into planets (name, ownerId, image) values ('Earth', 1, ?);
+insert into planets (name, ownerId, image) values ('Mars', 1, ?);
 
 create table moons(
 	id integer primary key,

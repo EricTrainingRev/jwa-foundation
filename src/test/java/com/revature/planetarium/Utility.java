@@ -3,11 +3,12 @@ package com.revature.planetarium;
 import com.revature.planetarium.utility.DatabaseConnector;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Base64;
@@ -26,10 +27,21 @@ public class Utility {
             lines.forEach(sqlBuilder::append);
             String sqlString = sqlBuilder.toString();
             String [] sqlStatements = sqlString.split(";");
+            int planetImageCount = 1;
             for (String sqlStatement : sqlStatements) {
-                try (Statement stmt = conn.createStatement()) {
-                    stmt.executeUpdate(sqlStatement);
+                if (sqlStatement.contains("?")){
+                    try(PreparedStatement ps = conn.prepareStatement(sqlStatement)){
+                        byte[] imageData = convertImgToByteArray(String.format("src/test/resources/Celestial-Images/planet-%d.jpg", planetImageCount));
+                        ps.setBytes(1, imageData);
+                        ps.executeUpdate();
+                        planetImageCount++;
+                    }
+                } else {
+                    try (Statement stmt = conn.createStatement()) {
+                        stmt.executeUpdate(sqlStatement);
+                    }
                 }
+
             }
             conn.commit();
         } catch (IOException | SQLException e) {
@@ -42,5 +54,10 @@ public class Utility {
             byte[] fileBytes = fis.readAllBytes();
             return Base64.getEncoder().encodeToString(fileBytes);
         }
+    }
+
+    public static byte[] convertImgToByteArray(String filePath) throws IOException {
+        byte[] imageBytes = Files.readAllBytes(Paths.get(filePath));
+        return imageBytes;
     }
 }
