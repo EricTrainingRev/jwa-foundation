@@ -50,8 +50,10 @@ public class MoonDaoImp implements MoonDao {
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 byte[] byteImageData = rs.getBytes("image");
-                String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
-                moon.setImageData(base64ImageData);
+                if (byteImageData != null){
+                    String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
+                    moon.setImageData(base64ImageData);
+                }
                 return Optional.of(moon);
             }
         } catch (SQLException e) {
@@ -73,8 +75,10 @@ public class MoonDaoImp implements MoonDao {
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 byte[] byteImageData = rs.getBytes("image");
-                String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
-                moon.setImageData(base64ImageData);
+                if (byteImageData != null){
+                    String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
+                    moon.setImageData(base64ImageData);
+                }
                 return Optional.of(moon);
             }
         } catch (SQLException e) {
@@ -96,8 +100,10 @@ public class MoonDaoImp implements MoonDao {
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 byte[] byteImageData = rs.getBytes("image");
-                String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
-                moon.setImageData(base64ImageData);
+                if (byteImageData != null){
+                    String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
+                    moon.setImageData(base64ImageData);
+                }
                 moons.add(moon);
             }
         } catch (SQLException e) {
@@ -120,8 +126,10 @@ public class MoonDaoImp implements MoonDao {
                 moon.setMoonName(rs.getString("name"));
                 moon.setOwnerId(rs.getInt("myPlanetId"));
                 byte[] byteImageData = rs.getBytes("image");
-                String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
-                moon.setImageData(base64ImageData);
+                if (byteImageData != null){
+                    String base64ImageData = Base64.getEncoder().encodeToString(byteImageData);
+                    moon.setImageData(base64ImageData);
+                }
                 moons.add(moon);
             }
         } catch (SQLException e) {

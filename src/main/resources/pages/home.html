@@ -3,7 +3,6 @@
 <head>
     <title>Home</title>
     <style>
-        /* CSS styles for the table, select, and input */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -15,12 +14,9 @@
             border-bottom: 1px solid #ddd;
         }
 
-        body {
-            background-color: #f2f2f2;
-        }
-
         h1 {
             color: #333;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         select {
@@ -58,35 +54,44 @@
             top: 10px;
             right: 10px;
         }
+
+        .center{
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+            background-color: rgba(192, 192, 192, 0.85);
+            text-align: center;
+            
+        }
+        .heading{
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
-    <h1 id="greeting">Welcome to the Home Page</h1>
     <button class="logout-button" id="logoutButton" onclick="logout()">Logout</button>
-
-
-    <div id="deleteContainer">
-        <input type="text" id="deleteInput" placeholder="name for celestial body to be deleted">
-        <button id="deleteButton" onclick="deleteCelestial()">Delete</button>
+    <div class="center">
+        <h1 id="greeting">Welcome to the Home Page</h1>
+        <select id="locationSelect" class="heading">
+            <option value="moon">Moon</option>
+            <option value="planet">Planet</option>
+        </select>
+        <div id="deleteContainer" class="heading">
+            <input type="text" id="deleteInput" placeholder="name for celestial body to be deleted">
+            <button id="deleteButton" onclick="deleteCelestial()">Delete</button>
+        </div>
+        <div id="inputContainer"></div>        
     </div>
-
-    <select id="locationSelect">
-        <option value="moon">Moon</option>
-        <option value="planet">Planet</option>
-    </select>
-
-    <div id="inputContainer"></div>
-
-    <table id="celestialTable">
-        <tr>
-            <th>Type</th>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Owner</th>
-        </tr>
-        <!-- Add rows for each celestial object here -->
-    </table>
-
+    <div class="center" style="border: 3px solid black;">
+        <table id="celestialTable">
+            <tr>
+                <th>Type</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Owner</th>
+            </tr>
+        </table>        
+    </div>
     <script>
         
         populateCelestialTable();
@@ -326,6 +331,52 @@
                 reader.readAsArrayBuffer(new Blob([atob(base64Data)]));
             }
         }
+    async function setBackgroundImageWithScrolling(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            response.text().then(function (imageData) {
+                console.log(imageData); // Debug output
+                document.body.style.backgroundImage = `url(data:image/jpg;base64,${imageData})`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundRepeat = 'repeat-x';
+                document.body.style.backgroundPosition = 'left top';
+                document.body.style.animation = 'scrollBackground 20s linear infinite';                
+            });
+
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Define the keyframes for scrolling background animation
+    const styleElement = document.head.querySelector('style');
+    const keyframes = `
+    @keyframes scrollBackground {
+        0% {
+            background-position: left top;
+        }
+        100% {
+            background-position: 450% top;
+        }
+    }`;
+
+    // Append the keyframes to the style element if it exists
+    if (styleElement) {
+        styleElement.innerHTML += keyframes;
+    }
+
+    // window.addEventListener('resize', function() {
+    //     const viewportWidth = window.innerWidth;
+    //     document.body.style.backgroundSize = `${viewportWidth}px auto`;
+    // });
+
+    // Call the function with the URL of the image
+    setBackgroundImageWithScrolling('http://localhost:8080/background');
+</script>
     </script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 # DEV NOTES
-- moon creation input for planet Id request ID but takes in string, associates should find this
+- moon creation input for planet Id request ID but name or id is acceptable, associates should find this
+- file upload does not validate the file is actually an image, but backend only handles base64 and byte[] version of the files, so it does not matter for the backend whether the file is an image or not. Assocaites should find this
+- background image scales dynamically with the page, and the transition is jumpy (sometimes?) when the keyframe restarts. 
 
 # JWA Foundation Project
 

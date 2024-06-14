@@ -1,12 +1,10 @@
 package com.revature.planetarium.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 import io.javalin.http.Context;
 
@@ -60,5 +58,13 @@ public class ViewController {
         } catch (IOException e) {
             e.printStackTrace();
             ctx.status(400);}
+    }
+
+    public void backgroundImage(Context ctx) throws IOException{
+        try (FileInputStream fis = new FileInputStream("src/test/resources/Celestial-Images/planet-5.jpg")) {
+            byte[] fileBytes = fis.readAllBytes();
+            String imageDataBase64 = Base64.getEncoder().encodeToString(fileBytes);
+            ctx.result(imageDataBase64);
+        }
     }
 }

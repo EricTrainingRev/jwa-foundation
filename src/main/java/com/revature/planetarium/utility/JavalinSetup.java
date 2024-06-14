@@ -48,6 +48,9 @@ public class JavalinSetup {
             ctx.status(401);
             ctx.result(e.getMessage());
         });
+
+        // for background image
+        app.get("/background", viewController::backgroundImage);
         
         /*
          * Mapping Pages to Javalin app
