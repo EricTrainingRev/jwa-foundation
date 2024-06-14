@@ -60,11 +60,17 @@ public class ViewController {
             ctx.status(400);}
     }
 
-    public void backgroundImage(Context ctx) throws IOException{
-        try (FileInputStream fis = new FileInputStream("src/test/resources/Celestial-Images/planet-5.jpg")) {
-            byte[] fileBytes = fis.readAllBytes();
-            String imageDataBase64 = Base64.getEncoder().encodeToString(fileBytes);
-            ctx.result(imageDataBase64);
+    public void backgroundImage(Context ctx) throws IOException {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("images/galaxy-4.jpg")) {
+            if (is != null) {
+                byte[] fileBytes = is.readAllBytes();
+                String imageDataBase64 = Base64.getEncoder().encodeToString(fileBytes);
+                ctx.result(imageDataBase64);
+            } else {
+                // Handle resource not found
+                ctx.result("Resource not found");
+                ctx.status(404);
+            }
         }
     }
 }
